@@ -34,29 +34,16 @@ trainingLabel <- as.numeric(readLines('UCI HAR Dataset/train/y_train.txt'))
 testLabel <- as.numeric(readLines('UCI HAR Dataset/test/y_test.txt'))
 mergedLabel <- c(trainingLabel, testLabel)
 
-labeledDataSet <- selectedData
-labeledDataSet$label <- mergedLabel
-labeledDataSet <- merge(labeledDataSet, descriptiveActivityName, by.x='label', by.y='label')
-
-# q5
 trainingSubject <- as.numeric(readLines('UCI HAR Dataset/train/subject_train.txt'))
 testSubject <- as.numeric(readLines('UCI HAR Dataset/test/subject_test.txt'))
 mergedSubject <- c(trainingSubject, testSubject)
 
-subjectedLabeledDataSet <- labeledDataSet
-subjectedLabeledDataSet$subject <- mergedSubject
+selectedData$label <- mergedLabel
+selectedData$subject <- mergedSubject
+cookedData <- merge(selectedData, descriptiveActivityName, by.x='label', by.y='label')
 
-
-cookedData <- subjectedLabeledDataSet
+# q5
 cookedData$label <- NULL
 
 output <- aggregate(. ~ subject + descriptiveLabel, data=cookedData, mean)
 write.table(output, 'output.txt', row.name=FALSE)
-
-
-
-
-
-
-
-
